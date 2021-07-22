@@ -1,3 +1,16 @@
+Config:  
+`make menuconfig`
+`Kernel hacking` -> `Kernel Testing and Coverage` ->  
+check `Code coverage for fuzzing`  
+DON'T check `Instrument all code by default`
+
+Build and Install:  
+./mybuild.sh
+cd ..
+sudo dpkg -i <header package name> <image package name>
+
+---
+
 Linux kernel
 ============
 
