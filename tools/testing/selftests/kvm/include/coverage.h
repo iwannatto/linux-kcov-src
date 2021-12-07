@@ -38,7 +38,7 @@ do { \
     kcov_fd = open("/sys/kernel/debug/kcov", O_RDWR); \
     if (kcov_fd == -1) \
         perror("open"), exit(1); \
-    sprintf(coverage_file_path, "/home/mizutani/NestedKVMFuzzer/selftest-coverage/%s.bin", COVERAGE_FILENAME); \
+    sprintf(coverage_file_path, "/home/mizutani/NestedKVMFuzzer/linux-kcov/linux-kcov-src/selftest-coverage/%s.bin", COVERAGE_FILENAME); \
     coverage_file = fopen(coverage_file_path, "wb"); \
     if (coverage_file == NULL) \
         perror("fopen"), exit(1); \
