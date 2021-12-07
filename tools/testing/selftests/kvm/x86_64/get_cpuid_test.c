@@ -11,6 +11,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID 0
 
@@ -157,6 +158,8 @@ int main(void)
 	struct kvm_vm *vm;
 	int stage;
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, guest_main);
 
 	supp_cpuid = kvm_get_supported_cpuid();
@@ -172,4 +175,6 @@ int main(void)
 		run_vcpu(vm, VCPU_ID, stage);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

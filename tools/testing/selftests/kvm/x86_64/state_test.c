@@ -20,6 +20,8 @@
 #include "vmx.h"
 #include "svm_util.h"
 
+#include "coverage.h"
+
 #define VCPU_ID		5
 #define L2_GUEST_STACK_SIZE 256
 
@@ -163,6 +165,8 @@ int main(int argc, char *argv[])
 	struct ucall uc;
 	int stage;
 
+	coverage_start();
+
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
 	run = vcpu_state(vm, VCPU_ID);
@@ -229,4 +233,6 @@ int main(int argc, char *argv[])
 
 done:
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

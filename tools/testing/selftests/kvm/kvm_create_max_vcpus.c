@@ -19,6 +19,8 @@
 #include "asm/kvm.h"
 #include "linux/kvm.h"
 
+#include "coverage.h"
+
 void test_vcpu_creation(int first_vcpu_id, int num_vcpus)
 {
 	struct kvm_vm *vm;
@@ -44,6 +46,8 @@ int main(int argc, char *argv[])
 	pr_info("KVM_CAP_MAX_VCPU_ID: %d\n", kvm_max_vcpu_id);
 	pr_info("KVM_CAP_MAX_VCPUS: %d\n", kvm_max_vcpus);
 
+	coverage_start();
+
 	/*
 	 * Upstream KVM prior to 4.8 does not support KVM_CAP_MAX_VCPU_ID.
 	 * Userspace is supposed to use KVM_CAP_MAX_VCPUS as the maximum ID
@@ -61,6 +65,8 @@ int main(int argc, char *argv[])
 	if (kvm_max_vcpu_id > kvm_max_vcpus)
 		test_vcpu_creation(
 			kvm_max_vcpu_id - kvm_max_vcpus, kvm_max_vcpus);
+
+	coverage_end();
 
 	return 0;
 }

@@ -21,6 +21,7 @@
 
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID                  5
 
@@ -90,6 +91,8 @@ int main(int argc, char *argv[])
 	/* Tell stdout not to buffer its content */
 	setbuf(stdout, NULL);
 
+	coverage_start();
+
 	/*
 	 * Create a dummy VM, specifically to avoid doing KVM_SET_CPUID2, and
 	 * use it to verify all supported CR4 bits can be set prior to defining
@@ -137,6 +140,8 @@ int main(int argc, char *argv[])
 		    sregs.apic_base);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }

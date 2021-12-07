@@ -26,6 +26,8 @@
 #include "test_util.h"
 #include "guest_modes.h"
 
+#include "coverage.h"
+
 #define DUMMY_MEMSLOT_INDEX 7
 
 #define DEFAULT_MEMSLOT_MODIFICATION_ITERATIONS 10
@@ -172,6 +174,8 @@ int main(int argc, char *argv[])
 		.partition_vcpu_memory_access = true
 	};
 
+	coverage_start();
+
 	guest_modes_append_default();
 
 	while ((opt = getopt(argc, argv, "hm:d:b:v:oi:")) != -1) {
@@ -207,6 +211,8 @@ int main(int argc, char *argv[])
 	}
 
 	for_each_guest_mode(run_test, &p);
+
+	coverage_end();
 
 	return 0;
 }

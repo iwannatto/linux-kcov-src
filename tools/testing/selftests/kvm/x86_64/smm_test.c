@@ -19,6 +19,8 @@
 #include "vmx.h"
 #include "svm_util.h"
 
+#include "coverage.h"
+
 #define VCPU_ID	      1
 
 #define PAGE_SIZE  4096
@@ -99,6 +101,8 @@ int main(int argc, char *argv[])
 	struct kvm_x86_state *state;
 	int stage, stage_reported;
 
+	coverage_start();
+
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
 
@@ -159,4 +163,6 @@ int main(int argc, char *argv[])
 
 done:
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

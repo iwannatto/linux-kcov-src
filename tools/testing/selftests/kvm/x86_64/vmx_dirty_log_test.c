@@ -16,6 +16,7 @@
 #include "kvm_util.h"
 #include "processor.h"
 #include "vmx.h"
+#include "coverage.h"
 
 #define VCPU_ID				1
 
@@ -79,6 +80,8 @@ int main(int argc, char *argv[])
 	bool done = false;
 
 	nested_vmx_check_supported();
+
+	coverage_start();
 
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, l1_guest_code);
@@ -153,4 +156,6 @@ int main(int argc, char *argv[])
 			TEST_FAIL("Unknown ucall %lu", uc.cmd);
 		}
 	}
+
+	coverage_end();
 }

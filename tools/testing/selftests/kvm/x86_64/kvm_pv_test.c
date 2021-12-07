@@ -11,6 +11,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 extern unsigned char rdmsr_start;
 extern unsigned char rdmsr_end;
@@ -215,6 +216,8 @@ int main(void)
 		exit(KSFT_SKIP);
 	}
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, guest_main);
 
 	cap.cap = KVM_CAP_ENFORCE_PV_FEATURE_CPUID;
@@ -231,4 +234,6 @@ int main(void)
 
 	enter_guest(vm);
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

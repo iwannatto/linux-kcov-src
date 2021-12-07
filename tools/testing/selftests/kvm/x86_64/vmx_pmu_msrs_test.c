@@ -18,6 +18,8 @@
 #include "kvm_util.h"
 #include "vmx.h"
 
+#include "coverage.h"
+
 #define VCPU_ID	      0
 
 #define X86_FEATURE_PDCM	(1<<15)
@@ -68,6 +70,8 @@ int main(int argc, char *argv[])
 
 	host_cap.capabilities = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
 	host_cap.capabilities &= (PMU_CAP_FW_WRITES | PMU_CAP_LBR_FMT);
+
+	coverage_start();
 
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
@@ -128,4 +132,6 @@ int main(int argc, char *argv[])
 	ASSERT_EQ(vcpu_get_msr(vm, VCPU_ID, MSR_IA32_PERF_CAPABILITIES), 0);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

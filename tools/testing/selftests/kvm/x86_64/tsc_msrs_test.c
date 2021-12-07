@@ -8,6 +8,7 @@
 #include <string.h>
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID 0
 
@@ -106,6 +107,8 @@ int main(void)
 	struct kvm_vm *vm;
 	uint64_t val;
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
 
 	val = 0;
@@ -162,6 +165,8 @@ int main(void)
 	ASSERT_EQ(rounded_host_rdmsr(MSR_IA32_TSC_ADJUST), val - HOST_ADJUST);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }

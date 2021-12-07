@@ -28,6 +28,8 @@
 
 #include "kselftest.h"
 
+#include "coverage.h"
+
 #define VCPU_ID		0
 
 /* The virtual machine object. */
@@ -86,6 +88,8 @@ int main(int argc, char *argv[])
 
 	nested_vmx_check_supported();
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, (void *) l1_guest_code);
 
 	kvm_get_cpu_address_width(&paddr_width, &vaddr_width);
@@ -137,5 +141,6 @@ int main(int argc, char *argv[])
 		}
 	}
 	kvm_vm_free(vm);
+	coverage_end();
 	return 0;
 }

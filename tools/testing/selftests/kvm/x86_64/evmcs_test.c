@@ -17,6 +17,8 @@
 
 #include "vmx.h"
 
+#include "coverage.h"
+
 #define VCPU_ID		5
 
 void l2_guest_code(void)
@@ -88,6 +90,8 @@ int main(int argc, char *argv[])
 	struct kvm_x86_state *state;
 	struct ucall uc;
 	int stage;
+
+	coverage_start();
 
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
@@ -162,4 +166,6 @@ part1_done:
 		    "Unexpected successful VMEnter with invalid eVMCS pointer!");
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 }

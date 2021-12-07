@@ -19,6 +19,7 @@
 #include "kvm_util.h"
 #include "processor.h"
 #include "vmx.h"
+#include "coverage.h"
 
 #define VCPU_ID 0
 
@@ -138,6 +139,8 @@ int main(int argc, char *argv[])
 		exit(KSFT_SKIP);
 	}
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
 
 	/* Test vCPU ioctl version */
@@ -171,6 +174,8 @@ do_sys:
 
 out:
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }

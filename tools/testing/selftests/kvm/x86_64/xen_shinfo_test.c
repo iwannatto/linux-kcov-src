@@ -10,6 +10,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #include <stdint.h>
 #include <time.h>
@@ -139,6 +140,8 @@ int main(int argc, char *argv[])
 	bool do_runstate_tests = !!(xen_caps & KVM_XEN_HVM_CONFIG_RUNSTATE);
 
 	clock_gettime(CLOCK_REALTIME, &min_ts);
+
+	coverage_start();
 
 	vm = vm_create_default(VCPU_ID, 0, (void *) guest_code);
 	vcpu_set_cpuid(vm, VCPU_ID, kvm_get_supported_cpuid());
@@ -316,5 +319,6 @@ int main(int argc, char *argv[])
 			    "runstate times don't add up");
 	}
 	kvm_vm_free(vm);
+	coverage_end();
 	return 0;
 }

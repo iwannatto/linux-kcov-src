@@ -22,6 +22,7 @@
 #include "test_util.h"
 #include "guest_modes.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID				1
 
@@ -822,6 +823,8 @@ int main(int argc, char *argv[])
 	sem_init(&dirty_ring_vcpu_stop, 0, 0);
 	sem_init(&dirty_ring_vcpu_cont, 0, 0);
 
+	coverage_start();
+
 	guest_modes_append_default();
 
 	while ((opt = getopt(argc, argv, "c:hi:I:p:m:M:")) != -1) {
@@ -887,6 +890,8 @@ int main(int argc, char *argv[])
 		host_log_mode = host_log_mode_option;
 		for_each_guest_mode(run_test, &p);
 	}
+
+	coverage_end();
 
 	return 0;
 }

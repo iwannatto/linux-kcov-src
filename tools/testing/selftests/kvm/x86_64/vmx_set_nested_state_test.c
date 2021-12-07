@@ -11,6 +11,7 @@
 #include "kvm_util.h"
 #include "processor.h"
 #include "vmx.h"
+#include "coverage.h"
 
 #include <errno.h>
 #include <linux/kvm.h>
@@ -278,6 +279,8 @@ int main(int argc, char *argv[])
 	 */
 	nested_vmx_check_supported();
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, 0);
 
 	/*
@@ -315,5 +318,6 @@ int main(int argc, char *argv[])
 	test_vmx_nested_state(vm);
 
 	kvm_vm_free(vm);
+	coverage_end();
 	return 0;
 }

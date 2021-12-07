@@ -10,6 +10,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID		5
 
@@ -91,6 +92,8 @@ int main(int argc, char *argv[])
 		exit(KSFT_SKIP);
 	}
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, (void *) guest_code);
 	vcpu_set_hv_cpuid(vm, VCPU_ID);
 
@@ -145,5 +148,6 @@ int main(int argc, char *argv[])
 	}
 done:
 	kvm_vm_free(vm);
+	coverage_end();
 	return 0;
 }

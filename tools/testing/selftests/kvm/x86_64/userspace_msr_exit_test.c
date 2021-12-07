@@ -11,6 +11,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "vmx.h"
+#include "coverage.h"
 
 /* Forced emulation prefix, used to invoke the emulator unconditionally. */
 #define KVM_FEP "ud2; .byte 'k', 'v', 'm';"
@@ -757,6 +758,8 @@ static void test_msr_permission_bitmap(void) {
 
 int main(int argc, char *argv[])
 {
+	coverage_start();
+
 	/* Tell stdout not to buffer its content */
 	setbuf(stdout, NULL);
 
@@ -765,6 +768,8 @@ int main(int argc, char *argv[])
 	test_msr_filter_deny();
 
 	test_msr_permission_bitmap();
+
+	coverage_end();
 
 	return 0;
 }

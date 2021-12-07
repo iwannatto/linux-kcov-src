@@ -20,6 +20,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID 0
 #define MSR_PLATFORM_INFO_MAX_TURBO_RATIO 0xff00
@@ -92,6 +93,8 @@ int main(int argc, char *argv[])
 		exit(KSFT_SKIP);
 	}
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
 
 	msr_platform_info = vcpu_get_msr(vm, VCPU_ID, MSR_PLATFORM_INFO);
@@ -102,6 +105,8 @@ int main(int argc, char *argv[])
 	vcpu_set_msr(vm, VCPU_ID, MSR_PLATFORM_INFO, msr_platform_info);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }

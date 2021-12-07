@@ -19,6 +19,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID 5
 
@@ -98,6 +99,8 @@ int main(int argc, char *argv[])
 		print_skip("The \"invalid\" field is not invalid");
 		exit(KSFT_SKIP);
 	}
+
+	coverage_start();
 
 	/* Create VM */
 	vm = vm_create_default(VCPU_ID, 0, guest_code);
@@ -238,6 +241,8 @@ int main(int argc, char *argv[])
 		    regs.rbx);
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }

@@ -11,6 +11,7 @@
 #include "kvm_util.h"
 #include "processor.h"
 #include "svm_util.h"
+#include "coverage.h"
 
 #define VCPU_ID		5
 
@@ -43,6 +44,8 @@ int main(int argc, char *argv[])
 
 	nested_svm_check_supported();
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, (void *) l1_guest_code);
 
 	vcpu_alloc_svm(vm, &svm_gva);
@@ -72,5 +75,6 @@ int main(int argc, char *argv[])
 	}
 done:
 	kvm_vm_free(vm);
+	coverage_end();
 	return 0;
 }

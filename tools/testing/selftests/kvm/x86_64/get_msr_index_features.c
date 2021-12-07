@@ -14,6 +14,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 static int kvm_num_index_msrs(int kvm_fd, int nmsrs)
 {
@@ -127,8 +128,12 @@ static void test_get_msr_feature(void)
 
 int main(int argc, char *argv[])
 {
+	coverage_start();
+
 	if (kvm_check_cap(KVM_CAP_GET_MSR_FEATURES))
 		test_get_msr_feature();
 
 	test_get_msr_index();
+
+	coverage_end();
 }

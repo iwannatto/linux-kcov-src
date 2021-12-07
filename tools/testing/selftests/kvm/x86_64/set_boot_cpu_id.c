@@ -14,6 +14,7 @@
 #include "test_util.h"
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define N_VCPU 2
 #define VCPU_ID0 0
@@ -158,9 +159,13 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
+	coverage_start();
+
 	run_vm_bsp(VCPU_ID0);
 	run_vm_bsp(VCPU_ID1);
 	run_vm_bsp(VCPU_ID0);
 
 	check_set_bsp_busy();
+
+	coverage_end();
 }

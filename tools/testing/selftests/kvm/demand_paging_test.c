@@ -22,6 +22,8 @@
 #include "perf_test_util.h"
 #include "guest_modes.h"
 
+#include "coverage.h"
+
 #ifdef __NR_userfaultfd
 
 #ifdef PRINT_PER_PAGE_UPDATES
@@ -413,6 +415,8 @@ int main(int argc, char *argv[])
 	};
 	int opt;
 
+	coverage_start();
+
 	guest_modes_append_default();
 
 	while ((opt = getopt(argc, argv, "hm:ud:b:v:o")) != -1) {
@@ -446,6 +450,8 @@ int main(int argc, char *argv[])
 	}
 
 	for_each_guest_mode(run_test, &p);
+
+	coverage_end();
 
 	return 0;
 }

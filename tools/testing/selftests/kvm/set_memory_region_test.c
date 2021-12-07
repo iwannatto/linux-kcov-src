@@ -17,6 +17,8 @@
 #include <kvm_util.h>
 #include <processor.h>
 
+#include "coverage.h"
+
 #define VCPU_ID 0
 
 /*
@@ -386,6 +388,8 @@ int main(int argc, char *argv[])
 	/* Tell stdout not to buffer its content */
 	setbuf(stdout, NULL);
 
+	coverage_start();
+
 #ifdef __x86_64__
 	/*
 	 * FIXME: the zero-memslot test fails on aarch64 and s390x because
@@ -410,6 +414,8 @@ int main(int argc, char *argv[])
 	for (i = 0; i < loops; i++)
 		test_delete_memory_region();
 #endif
+
+	coverage_end();
 
 	return 0;
 }

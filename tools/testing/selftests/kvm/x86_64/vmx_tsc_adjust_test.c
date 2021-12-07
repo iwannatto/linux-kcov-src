@@ -28,6 +28,8 @@
 
 #include "kselftest.h"
 
+#include "coverage.h"
+
 #ifndef MSR_IA32_TSC_ADJUST
 #define MSR_IA32_TSC_ADJUST 0x3b
 #endif
@@ -131,6 +133,8 @@ int main(int argc, char *argv[])
 
 	nested_vmx_check_supported();
 
+	coverage_start();
+
 	vm = vm_create_default(VCPU_ID, 0, (void *) l1_guest_code);
 
 	/* Allocate VMX pages and shared descriptors (vmx_pages). */
@@ -163,5 +167,6 @@ int main(int argc, char *argv[])
 
 	kvm_vm_free(vm);
 done:
+	coverage_end();
 	return 0;
 }

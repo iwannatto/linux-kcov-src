@@ -18,6 +18,7 @@
 #include "test_util.h"
 #include "perf_test_util.h"
 #include "guest_modes.h"
+#include "coverage.h"
 
 /* How many host loops to run by default (one KVM_GET_DIRTY_LOG for each loop)*/
 #define TEST_HOST_LOOP_N		2UL
@@ -284,6 +285,8 @@ int main(int argc, char *argv[])
 	dirty_log_manual_caps &= (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE |
 				  KVM_DIRTY_LOG_INITIALLY_SET);
 
+	coverage_start();
+
 	guest_modes_append_default();
 
 	while ((opt = getopt(argc, argv, "hi:p:m:b:f:v:os:")) != -1) {
@@ -327,6 +330,8 @@ int main(int argc, char *argv[])
 	pr_info("Test iterations: %"PRIu64"\n",	p.iterations);
 
 	for_each_guest_mode(run_test, &p);
+
+	coverage_end();
 
 	return 0;
 }
