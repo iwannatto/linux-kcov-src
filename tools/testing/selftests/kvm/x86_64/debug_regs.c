@@ -8,6 +8,7 @@
 #include <string.h>
 #include "kvm_util.h"
 #include "processor.h"
+#include "coverage.h"
 
 #define VCPU_ID 0
 
@@ -78,6 +79,8 @@ int main(void)
 		5,		/* mov */
 		2,		/* rdmsr */
 	};
+
+	coverage_start();
 
 	if (!kvm_check_cap(KVM_CAP_SET_GUEST_DEBUG)) {
 		print_skip("KVM_CAP_SET_GUEST_DEBUG not supported");
@@ -196,6 +199,8 @@ int main(void)
 	TEST_ASSERT(cmd == UCALL_DONE, "UCALL_DONE");
 
 	kvm_vm_free(vm);
+
+	coverage_end();
 
 	return 0;
 }
