@@ -62,7 +62,7 @@ but I make it a macro to match the format with coverage_start() */
 #define coverage_end() \
 do { \
 	kcov_n = __atomic_load_n(&kcov_cover[0], __ATOMIC_RELAXED); \
-	if (fwrite(kcov_cover, sizeof(unsigned long), kcov_n, coverage_file) != kcov_n) \
+	if (fwrite(kcov_cover + 1, sizeof(unsigned long), kcov_n, coverage_file) != kcov_n) \
 		perror("fwrite"), exit(1); \
 	/* Disable coverage collection for the current thread. After this call \
 	* coverage can be enabled for a different thread. \
